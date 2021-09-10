@@ -3,8 +3,10 @@ from pickle import load
 from nfstream import NFStreamer
 import random
 import pandas as pd
-from deploy import columns
-
+import socket
+testing = socket.gethostbyname(socket.gethostname())
+print(testing)
+print('^ current_host ^')
 online_streamer = NFStreamer(source='KakaoTalk_talk.pcap')
 pipeline = load(open("Adaboost_model.sav","rb"))
 

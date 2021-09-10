@@ -4,7 +4,7 @@ import pandas as pd
 
 # from train_model import columns
 
-pipeline = load(open("Adaboost_model.sav","rb"))
+pipeline = load(open("Adaboost_model.sav", "rb"))
 
 columns = (['duration'
     , 'protocol_type'
@@ -69,7 +69,6 @@ cleanup_nums = {"protocol_type": {"tcp": 0, "udp": 1, "icmp": 2},
                          'S0': 5, 'S1': 6, 'S2': 7, 'S3': 8, 'SF': 9, 'SH': 10}}
 
 
-
 def predictAttacks(dataset):
     test = pd.read_csv(dataset)
     test.columns = columns
@@ -77,7 +76,7 @@ def predictAttacks(dataset):
     test2 = pd.read_csv(dataset)
     test2.columns = columns
     test2 = test2.replace(cleanup_nums)
-    test['attack'] = pipeline.predict(test.drop(columns=['attack','level']))
+    test['attack'] = pipeline.predict(test.drop(columns=['attack', 'level']))
     test.to_csv('out.csv')
     print(test)
     print(test2)
@@ -99,6 +98,7 @@ def get_data():
     if request.method == 'POST':
         upload_file = request.form["file"]
         return redirect(url_for('success', dataset=upload_file))
+
 
 @app.route('/success/<dataset>')
 def success(dataset):
