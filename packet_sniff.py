@@ -7,10 +7,13 @@ import socket
 testing = socket.gethostbyname(socket.gethostname())
 print(testing)
 print('^ current_host ^')
-online_streamer = NFStreamer(source='KakaoTalk_talk.pcap')
+online_streamer = NFStreamer(source='lo')
 pipeline = load(open("Adaboost_model.sav","rb"))
-
+bob = 0
+print('HIIII')
 for flow in online_streamer:
+    print(bob)
+    bob = bob + 1
     d = {'duration': flow.bidirectional_duration_ms, 'protocol_type': random.randint(0,2),
          'service': random.randint(0,69),'flag': random.randint(1,10),
          'src_bytes': flow.src2dst_bytes,'dst_bytes': flow.dst2src_bytes,
@@ -32,6 +35,7 @@ for flow in online_streamer:
          'dst_host_srv_diff_host_rate': random.uniform(0,1), 'dst_hostdst_host_count_serror_rate': random.uniform(0,1),
          'dst_host_srv_serror_rate': random.uniform(0,1), 'dst_host_rerror_rate': random.uniform(0,1),
          'dst_host_srv_rerror_rate': random.uniform(0,1)}
+    print('we passed')
     netflow = pd.DataFrame(index=[0],data=d)
     netflow.insert(len(d)-1,'attack','Nan',True)
     netflow['attack'] = pipeline.predict(netflow.drop(columns=['attack']))
